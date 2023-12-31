@@ -61,7 +61,31 @@ Vector2 Particle::getNormal(Vector2 otherPos) {
 }
 
 void Particle::attract(Vector2 posToAttract, float multiplier) { 
-    
+    float dist = fmax(getDistance(posToAttract),0.5);
+    Vector2 normal = getNormal(posToAttract);
+
+    vel.x -= normal.x/dist;
+    vel.y -= normal.y/dist;
+}
+
+void Particle::doFriction(float amount) { 
+    vel.x*=amount;
+    vel.y*=amount;
+}
+
+void Particle::move(int screenWidth, int screenHeight) { 
+    pos.x+=vel.x;
+    pos.y+=vel.y;
+
+    if(pos.x < 0) pos.x += screenWidth;
+    if(pos.x >= screenWidth) pos.x -= screenWidth;
+
+    if(pos.y < 0) pos.y += screenHeight;
+    if(pos.y >= screenHeight) pos.y -= screenHeight;
+}
+
+void Particle::drawPixel() { 
+    DrawPixelV(pos, color);
 }
 
 
