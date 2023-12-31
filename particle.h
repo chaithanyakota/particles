@@ -9,7 +9,7 @@ private:
     Vector2 vel;
     Color color;
 
-    float getDistance(Vector2 pos);
+    float getDistance(Vector2 otherPos);
     Vector2 getNormal(Vector2 otherPos);
 
     
@@ -40,3 +40,28 @@ Particle::Particle(Vector2 _pos, Vector2 _vel, Color _color)
     vel = _vel;
     color = _color;
 }
+
+float Particle::getDistance(Vector2 otherPos) { 
+    const float dx = pos.x - otherPos.x; 
+    const float dy = pos.y - otherPos.y;
+
+    return (sqrt((dx*dx) + (dy*dy)));
+}
+
+Vector2 Particle::getNormal(Vector2 otherPos) { 
+    float distance = getDistance(otherPos);
+
+    if (distance == 0.0f) distance = 1;
+    const float dx = pos.x - otherPos.x;
+    const float dy = pos.y - otherPos.y;
+
+    Vector2 normal = (Vector2) {dx*(1/distance), dy*(1/distance)};
+
+    return normal;
+}
+
+void Particle::attract(Vector2 posToAttract, float multiplier) { 
+    
+}
+
+
