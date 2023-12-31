@@ -85,6 +85,7 @@ void Particle::move(int screenWidth, int screenHeight) {
 }
 
 void Particle::drawPixel() { 
+    // DrawCircle(pos.x ,pos.y, 1.0, color);
     DrawPixelV(pos, color);
 }
 

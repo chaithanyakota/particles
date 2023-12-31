@@ -1,108 +1,51 @@
-/*******************************************************************************************
-*
-*   raylib [core] example - Basic 3d example
-*
-*   Welcome to raylib!
-*
-*   To compile example, just press F5.
-*   Note that compiled executable is placed in the same folder as .c file
-*
-*   You can find all basic examples on C:\raylib\raylib\examples folder or
-*   raylib official webpage: www.raylib.com
-*
-*   Enjoy using raylib. :)
-*
-*   This example has been created using raylib 1.0 (www.raylib.com)
-*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
-*
-*   Copyright (c) 2013-2023 Ramon Santamaria (@raysan5)
-*
-********************************************************************************************/
-
+#include<stdlib.h>
 #include "raylib.h"
+#include "particle.h"
 
-#if defined(PLATFORM_WEB)
-    #include <emscripten/emscripten.h>
-#endif
+int main() { 
+    const int screenWidth = 800; 
+    const int screenHeight = 800;
 
-//----------------------------------------------------------------------------------
-// Local Variables Definition (local to this module)
-//----------------------------------------------------------------------------------
-Camera camera = { 0 };
-Vector3 cubePosition = { 0 };
+    SetRandomSeed(1);
 
-//----------------------------------------------------------------------------------
-// Local Functions Declaration
-//----------------------------------------------------------------------------------
-static void UpdateDrawFrame(void);          // Update and draw one frame
+    const long numOfParticles = 10000;
 
-//----------------------------------------------------------------------------------
-// Main entry point
-//----------------------------------------------------------------------------------
-int main()
-{
-    // Initialization
-    //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    Particle *particles = (Particle*) malloc(numOfParticles * sizeof(Particle));
+
+    for(long long i = 0; i < numOfParticles; i++) { 
+        particles[i] = Particle(screenWidth, screenHeight);
+    }
 
     InitWindow(screenWidth, screenHeight, "raylib");
 
-    camera.position = (Vector3){ 10.0f, 10.0f, 8.0f };
-    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
-    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
-    camera.fovy = 60.0f;
-    camera.projection = CAMERA_PERSPECTIVE;
+    SetTargetFPS(60); 
 
-    //--------------------------------------------------------------------------------------
+    while(!WindowShouldClose()) { 
+        Vector2 mousePos = (Vector2) {(float)GetMouseX(), (float)GetMouseY()};
 
-#if defined(PLATFORM_WEB)
-    emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
-#else
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+        for(int i = 0; i < numOfParticles; i++) { 
+            particles[i].attract(mousePos, 1);
+            particles[i].doFriction(0.99); 
+            particles[i].move(screenWidth, screenHeight);
+        }
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        UpdateDrawFrame();
+        BeginDrawing();
+
+            ClearBackground(RAYWHITE);
+
+            for (int i = 0; i < numOfParticles; i++)
+            {
+                particles[i].drawPixel();
+            }
+
+            DrawFPS(24, 24);
+
+        EndDrawing();
     }
-#endif
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();                  // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 
-    return 0;
-}
+    CloseWindow();
+    MemFree(particles);
 
-// Update and draw game frame
-static void UpdateDrawFrame(void)
-{
-    // Update
-    //----------------------------------------------------------------------------------
-    UpdateCamera(&camera, CAMERA_ORBITAL);
-    //----------------------------------------------------------------------------------
-
-    // Draw
-    //----------------------------------------------------------------------------------
-    BeginDrawing();
-
-        ClearBackground(RAYWHITE);
-
-        BeginMode3D(camera);
-
-            DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
-            DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
-            DrawGrid(10, 1.0f);
-
-        EndMode3D();
-
-        DrawText("This is a raylib example", 10, 40, 20, DARKGRAY);
-
-        DrawFPS(10, 10);
-
-    EndDrawing();
-    //----------------------------------------------------------------------------------
+    return 0; 
 }
