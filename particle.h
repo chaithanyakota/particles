@@ -31,7 +31,7 @@ Particle::Particle(int screenWidth, int screenHeight)
     vel.x = GetRandomValue(-100, 100) / 100.f;
     vel.y = GetRandomValue(-100, 100) / 100.f;
 
-    color = (Color){0,0,0,100};
+    color = (Color){255,255,255,100};
 }
 
 Particle::Particle(Vector2 _pos, Vector2 _vel, Color _color)

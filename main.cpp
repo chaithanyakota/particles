@@ -6,7 +6,7 @@ int main() {
     const int screenWidth = 800; 
     const int screenHeight = 800;
 
-    SetRandomSeed(1);
+    SetRandomSeed(69);
 
     const long numOfParticles = 10000;
 
@@ -31,14 +31,14 @@ int main() {
 
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(BLACK);
 
             for (int i = 0; i < numOfParticles; i++)
             {
                 particles[i].drawPixel();
             }
 
-            DrawFPS(24, 24);
+            // DrawFPS(24, 24);
 
         EndDrawing();
     }
