@@ -1,3 +1,2 @@
 # particles
 
-![video](Particles.mov)
