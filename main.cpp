@@ -16,7 +16,7 @@ int main() {
         particles[i] = Particle(screenWidth, screenHeight);
     }
 
-    InitWindow(screenWidth, screenHeight, "raylib");
+    InitWindow(screenWidth, screenHeight, "particles");
 
     SetTargetFPS(60); 
 
