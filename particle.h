@@ -31,7 +31,12 @@ Particle::Particle(int screenWidth, int screenHeight)
     vel.x = GetRandomValue(-100, 100) / 100.f;
     vel.y = GetRandomValue(-100, 100) / 100.f;
 
-    color = (Color){255,255,255,100};
+    // Color randomizer
+    // const unsigned char a = (GetRandomValue(0, 255));
+    // const unsigned char b = (GetRandomValue(0, 255));
+    // const unsigned char c = (GetRandomValue(0, 255));
+
+    color = (Color) {255, 255, 255, 100};
 }
 
 Particle::Particle(Vector2 _pos, Vector2 _vel, Color _color)
